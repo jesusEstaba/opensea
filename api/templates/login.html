@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link rel="icon"
+        href="https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/OpenSea_icon.svg/2048px-OpenSea_icon.svg.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@800&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/68d8235f51.js" crossorigin="anonymous"></script>
+    <style type="text/css">
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .blanco {
+            color: white;
+        }
+
+        .negro {
+            background-color: #202225;
+        }
+
+        .gris {
+            color: rgb(156, 156, 156);
+        }
+
+        .azul {
+            color: rgb(32, 129, 226)
+        }
+
+        .cuadrados {
+            outline: 1px solid #d0d0d0;
+        }
+    </style>
+
+    <title>OpenSea | Iniciar sesión</title>
+</head>
+
+<body>
+    <section class="negro blanco pb-5">
+        {% if mensaje %}
+        <div class="fluid-container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="alert alert-danger" role="alert">
+                        {{mensaje}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        <form class="container blanco" action="/login/users">
+            <div class="row">
+                <div class="col-12 py-2 text-end">
+                    <a href="/" type="button" class="btn-close btn-close-white" aria-label="Close"></a>
+                </div>
+                <div class="col-6">
+                    <h2 class="azul">Iniciar sesión</h2>
+                    <hr>
+                    <label for="exampleFormControlInput1" class="form-label">
+                        <h6>Email</h6>
+                    </label>
+                    <input type="#" class="form-control" id="exampleFormControlInput1" placeholder="example@gmail.com"
+                        name="email">
+                    <label for="exampleFormControlInput1" class="form-label pt-3">
+                        <h6>Nombre de usuario</h6>
+                    </label>
+                    <input type="#" class="form-control" id="exampleFormControlInput1"
+                        placeholder="example: Darth_Vader" name="userName">
+                    <label for="exampleFormControlInput1" class="form-label pt-3">
+                        <h6>Contraseña</h6>
+                    </label>
+                    <input type="#" class="form-control" id="exampleFormControlInput1" placeholder="********"
+                        name="password">
+                    <div class="col py-3 text-center">
+                        <div class="col text-center pt-2 pb-2">
+                            <a href="#" class="text-decoration-none">
+                                <h6 class="azul">¿Olvidaste la contraseña?</h6>
+                            </a>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-lg">Ingresar</button>
+                        <div class="col py-3">
+                            <a href="/signin" class="text-decoration-none">
+                                <h6 class="blanco">Registrarse</h6>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <small>El cielo es el límite para la creatividad.</small>
+                    </div>
+                    <hr>
+                    <div class="row pb-5">
+                        <div class="col-4">
+                            <small>O continuar con</small>
+                        </div>
+                        <div class="col-1"></div>
+                        <div class="col-1 px-1">
+                            <a href="#" type="button" class="btn btn-secondary">Google</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 pt-5 text-center">
+                    <img src="https://i.pinimg.com/originals/e6/51/32/e65132292d3dd4636d637e4560d8b5ae.gif" height="410"
+                        width="550" style="border-radius: 40px;">
+                </div>
+            </div>
+        </form>
+    </section>
+</body>
+
+</html>
