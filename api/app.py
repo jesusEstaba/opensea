@@ -55,9 +55,12 @@ def signin_user():
         'email': newEmail,
         'password': newPassword,
         'user': new_user_name,
-        'NFTS': 0
+        'NFTS': 0,
+        'user_created_at': datetime.now()
     }
     user = db.users.insert_one(newUser).inserted_id
+    session.pop('user_id', None)
+
     return redirect('/finished/' + str(user))
 
 
@@ -110,4 +113,34 @@ def profile_view():
     user = db.users.find_one({'_id': ObjectId(userId)})
     if not user:
         return abort(404)
-    return render_template("profile.html", user=user)
+
+    userImages = db.profile_images.find_one({'user_id': userId})
+   # if not userImages:
+    #    return abort(404)
+    return render_template("profile.html", user=user, userImages=userImages)
+
+
+@app.route("/upload/image")
+def upload_img():
+    if not session.get('user_id'):
+        return redirect('/')
+
+    imageUrl = request.args.get('image')
+    userId = session.get('user_id')
+    user_name = db.users.find_one({'_id': ObjectId(userId)})
+
+# En esta condición decimos "si el mensaje de texto no esta vacío o el mensaje
+# reservado del anunciante existe crea el mensaje".
+
+    if imageUrl != "":
+
+        imageUploaded = {}
+        imageUploaded['image_url'] = imageUrl
+        imageUploaded['user_id'] = userId
+        imageUploaded['user'] = user_name
+
+    else:
+        return abort(404)
+
+    db.profile_images.insert_one(imageUploaded)
+    return redirect('/profile')
