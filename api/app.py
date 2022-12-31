@@ -18,6 +18,9 @@ db = client.opensea
 
 @app.route("/")
 def home_view():
+
+    session.pop('user_id', None)
+
     return render_template("home.html")
 
 
@@ -129,9 +132,6 @@ def upload_img():
     userId = session.get('user_id')
     user_name = db.users.find_one({'_id': ObjectId(userId)})
 
-# En esta condición decimos "si el mensaje de texto no esta vacío o el mensaje
-# reservado del anunciante existe crea el mensaje".
-
     if imageUrl != "":
 
         imageUploaded = {}
@@ -144,3 +144,11 @@ def upload_img():
 
     db.profile_images.insert_one(imageUploaded)
     return redirect('/profile')
+
+
+@app.route("/logout")
+def logout():
+    if not session.get('user_id'):
+        return redirect('/')
+
+    return render_template('/')
