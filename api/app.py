@@ -120,7 +120,9 @@ def profile_view():
     userImages = db.profile_images.find_one({'user_id': userId})
    # if not userImages:
     #    return abort(404)
-    return render_template("profile.html", user=user, userImages=userImages)
+    nfts = list(db.nfts.find({'user_id': userId}))
+
+    return render_template("profile.html", user=user, userImages=userImages, nfts=nfts)
 
 
 @app.route("/upload/image")
@@ -146,9 +148,48 @@ def upload_img():
     return redirect('/profile')
 
 
-@app.route("/logout")
-def logout():
+@app.route("/creation")
+def creation_view():
     if not session.get('user_id'):
         return redirect('/')
 
-    return render_template('/')
+    userId = session.get('user_id')
+    nftImage = db.nfts.find_one({'user_id': userId})
+    mensaje = request.args.get('mensaje')
+
+    return render_template("creation.html", nftImage=nftImage, mensaje=mensaje)
+
+
+@app.route("/nft/creation")
+def create():
+    if not session.get('user_id'):
+        return redirect('/')
+
+    imageUrl = request.args.get('image')
+    nameNFT = request.args.get('name')
+    externalLink = request.args.get('external_link')
+    description = request.args.get('description')
+    quantity = request.args.get('quantity')
+    currency = request.args.get('currency')
+    nftValue = request.args.get('value')
+    userId = session.get('user_id')
+    user_name = db.users.find_one({'_id': ObjectId(userId)})
+
+    if imageUrl != "" or nameNFT != "" or description != "" or quantity != "" or currency != "" or nftValue != "":
+
+        newNft = {}
+        newNft['image_url'] = imageUrl
+        newNft['name'] = nameNFT
+        newNft['external_link'] = externalLink
+        newNft['description'] = description
+        newNft['quantity'] = quantity
+        newNft['currency'] = currency
+        newNft['nft_value'] = nftValue
+        newNft['user_id'] = userId
+        newNft['user'] = user_name
+
+    else:
+        return redirect('/creation?mensaje=Tienes campos vacíos')
+
+    generateNft = db.nfts.insert_one(newNft).inserted_id
+    return redirect('/profile/' + str(generateNft))
