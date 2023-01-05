@@ -58,7 +58,7 @@ def signin_user():
         'email': newEmail,
         'password': newPassword,
         'user': new_user_name,
-        'NFTS': 0,
+        'nfts': 0,
         'user_created_at': datetime.now()
     }
     user = db.users.insert_one(newUser).inserted_id
@@ -112,17 +112,13 @@ def profile_view():
         return redirect('/')
 
     userId = session.get('user_id')
-
     user = db.users.find_one({'_id': ObjectId(userId)})
-    if not user:
-        return abort(404)
+    userImage = db.profile_images.find_one({'user_id': userId})
+    # if not userImage:
+    #  return abort(404)
+    nfts = list(db.nfts.find({'owner': userId}))
 
-    userImages = db.profile_images.find_one({'user_id': userId})
-   # if not userImages:
-    #    return abort(404)
-    nfts = list(db.nfts.find({'user_id': userId}))
-
-    return render_template("profile.html", user=user, userImages=userImages, nfts=nfts)
+    return render_template("profile.html", user=user, userImage=userImage, nfts=nfts)
 
 
 @app.route("/upload/image")
@@ -143,8 +139,11 @@ def upload_img():
 
     else:
         return abort(404)
-
-    db.profile_images.insert_one(imageUploaded)
+    previousImage = db.profile_images.find_one({'user_id': userId})
+    if previousImage:
+        db.profile_images.pop(previousImage)
+    else:
+        db.profile_images.insert_one(imageUploaded)
     return redirect('/profile')
 
 
@@ -169,11 +168,11 @@ def create():
     nameNFT = request.args.get('name')
     externalLink = request.args.get('external_link')
     description = request.args.get('description')
-    quantity = request.args.get('quantity')
+    quantity = int(request.args.get('quantity'))
     currency = request.args.get('currency')
-    nftValue = request.args.get('value')
+    nftValue = float(request.args.get('value'))
     userId = session.get('user_id')
-    user_name = db.users.find_one({'_id': ObjectId(userId)})
+    user_object = db.users.find_one({'_id': ObjectId(userId)})
 
     if imageUrl != "" or nameNFT != "" or description != "" or quantity != "" or currency != "" or nftValue != "":
 
@@ -185,11 +184,19 @@ def create():
         newNft['quantity'] = quantity
         newNft['currency'] = currency
         newNft['nft_value'] = nftValue
-        newNft['user_id'] = userId
-        newNft['user'] = user_name
+        newNft['owner'] = userId
+        newNft['creator'] = user_object
+        newNft['creation_date'] = datetime.now()
 
     else:
         return redirect('/creation?mensaje=Tienes campos vacíos')
 
-    generateNft = db.nfts.insert_one(newNft).inserted_id
-    return redirect('/profile/' + str(generateNft))
+    db.nfts.insert_one(newNft)
+
+    db.users.update_one(
+        {'_id': user_object['_id']},
+        {'$set': {'nfts': user_object['nfts'] + quantity}
+         }
+    )
+
+    return redirect('/profile')

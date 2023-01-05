@@ -40,8 +40,6 @@
 
 <body>
     <section class="negro blanco pb-5">
-        <h1>this is a test
-        </h1>
         <form class="container-fluid" action="/upload/image">
             <div class="row py-2">
                 <div class="col-12">
@@ -87,11 +85,18 @@
             </div>
             <div class="row">
                 <div class="col-12 position-relative">
-                    <img class="img-fluid" src="https://images4.alphacoders.com/903/903952.jpg" alt="">
+                    <img class="img-fluid" src="https://images4.alphacoders.com/903/903952.jpg" alt=""
+                        style="border-radius:2rem; width: 500rem; height: 40rem;">
+                    {% if not userImage %}
                     <div class="position-absolute negro"
-                        style="border-radius: 0.5rem; bottom:-0.5rem; left: 3rem; width: 168px; padding: 0.5rem;">
-                        <img class="img_client img-fluid"
-                            src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/67d0c57c-62d2-4a74-b80a-0b5d587f4615/dexvphy-5135e5f1-f563-4dc7-955f-02a39debba23.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzY3ZDBjNTdjLTYyZDItNGE3NC1iODBhLTBiNWQ1ODdmNDYxNVwvZGV4dnBoeS01MTM1ZTVmMS1mNTYzLTRkYzctOTU1Zi0wMmEzOWRlYmJhMjMucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.YjWQdK30LHLHnj7y33CBDh82iTiLQUWpZmDB26lPjqM"
+                        style="border-radius: 1rem; bottom:-0.5rem; left: 3rem; width: 168px; padding: 0.5rem;">
+                        <img class="img-fluid" src="https://fl-1.cdn.flockler.com/embed/no-image.svg"
+                            style="border-radius: 0.5rem;">
+                    </div>
+                    {% endif %}
+                    <div class="position-absolute negro"
+                        style="border-radius: 1rem; bottom:-0.5rem; left: 3rem; width: 168px; padding: 0.5rem;">
+                        <img class="img_client img-fluid" src="{{userImage['image_url']}}"
                             style="border-radius: 0.5rem;">
                     </div>
                     <br>
@@ -101,84 +106,44 @@
             </div>
             <div class="row">
                 <div class="col-6 pt-3">
-                    <h2>{{user['user']}}</h2>
-                    <h6> (Wallet-id) Se ha unido {{user['user_created_at']}}</h6>
-
-                    <nav class="navbar">
-                        <a class="navbar-brand pt-2" href="#">
-                            <h6 class="blanco">Coleccionado</h6>
-                        </a>
-                        <a class="navbar-brand pt-2" href="#">
-                            <h6 class="blanco">Creado</h6>
-                        </a>
-                        <a class="navbar-brand pt-2" href="#">
-                            <h6 class="blanco">Añadido a favoritos</h6>
-                        </a>
-                        <a class="navbar-brand pt-2" href="#">
-                            <h6 class="blanco">Actividad</h6>
-                        </a>
-                        <div class=" navbar-brand dropdown">
-                            <a class="btn btn-secondary dropdown-toggle" href="#" role="button"
-                                data-bs-toggle="dropdown" aria-expanded="false">
-                                Más
+                    <div class="col-2 d-flex ">
+                        <h2>{{user['user']}}</h2>
+                        <div class="col-4 d-flex px-5">
+                            <a id="upload_widget" href="#" class="btn btn-outline-light btn-sm">
+                                <small>Cambiar imagen</small>
                             </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">Ofertas realizadas</a></li>
-                                <li><a class="dropdown-item" href="#">Ofertas recibidas</a></li>
-                                <li><a class="dropdown-item" href="#">Anuncios activos</a></li>
-                            </ul>
+                            <button type="submit"
+                                class="btn btn-outline-light btn-sm"><small>Actualizar</small></button>
                         </div>
-                    </nav>
+                    </div>
+                    <h6> (Wallet-id) Se ha unido {{user['user_created_at']}}</h6>
+                    <hr>
+                    <small>Artículos {{user['nfts']}} • Último NFT creado {{ ['creation_date']}} • Comisión del creador
+                        0%
+                        • Cadena Mafiance • Categoría Varios</small>
+                    <br>
+                    <br>
+                    <p>Descripción del perfil</p>
                 </div>
-                <div class="col-6 d-flex">
-                    <div class="col-3">
-                        <a href="/creation" class="btn btn-primary"><small>Crear NFT</small></a>
+                <div class="col-3"></div>
+                <div class="col-3 d-flex pt-3 text-end">
+                    <div class="col-3 text-end">
+                        <a href="/creation" class="btn btn-primary">Crear NFT</a>
                     </div>
-                    <div class="col-3">
-                        <a id="upload_widget" href="#" class="btn btn-outline-light">
-                            <small>Cambiar imagen</small>
-                        </a>
-                    </div>
-                    <div class="col-1"></div>
-                    <div class="col-3">
-                        <button type="submit" class="btn btn-outline-light">Subir</button>
-                    </div>
-                    <div class="col-2">
+                    <div class="col-2 text-end pt-1">
                         <i class="fa-solid fa-share-nodes fa-2x"></i>
                     </div>
                 </div>
             </div>
             <hr>
             <div class="row">
-                <div class="col-12 blanco">
-                    <nav class="navbar navbar-expand-lg">
-                        <div class="container-fluid">
-                            <div class="d-flex px-2" role="search">
-                                <input class="form-control me-2" type="search" placeholder="Buscar por nombre"
-                                    aria-label="Search">
-                            </div>
-                            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false"
-                                aria-label="Toggle navigation">
-                                <span class="navbar-toggler-icon"></span>
-                            </button>
-                            <div class="collapse navbar-collapse" id="navbar">
-                                <ul class="navbar-nav">
-                                    <li class="nav-item dropdown-center">
-                                        <a class="nav-link dropdown-toggle blanco" href="#" role="button"
-                                            data-bs-toggle="dropdown" aria-expanded="false">
-                                            Recibido recientemente
-                                        </a>
-                                        <ul class="dropdown-menu dropdown-menu-secondary">
-                                            <li><a class="dropdown-item" href="#">Action</a></li>
-                                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                                            <li><a class="dropdown-item" href="#">Something else here</a></li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </div>
+                <div class="col-4">
+                    <form class="form-control">
+                        <div class="d-flex" role="search">
+                            <input class="form-control me-2" type="search" placeholder="Buscar por nombre o atributo"
+                                aria-label="Search">
                         </div>
-                    </nav>
+                    </form>
                 </div>
             </div>
             {% if not nfts %}
