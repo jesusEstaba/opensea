@@ -9,9 +9,11 @@
         integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link rel="icon"
         href="https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/OpenSea_icon.svg/2048px-OpenSea_icon.svg.png">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet">
+
     <script src="https://kit.fontawesome.com/68d8235f51.js" crossorigin="anonymous"></script>
     <style type="text/css">
         body {
@@ -32,6 +34,10 @@
 
         .cuadrados {
             outline: 1px solid #d0d0d0;
+        }
+
+        .azul {
+            color: rgb(32, 129, 226);
         }
     </style>
 
@@ -146,22 +152,63 @@
                     </form>
                 </div>
             </div>
-            {% if not nfts %}
-            <div class="row pt-3">
-                <div class="col-1"></div>
-                <div class="col-10 cuadrados text-center pt-3" style="border-radius: 15px;">
-                    <h4 class="py-5">No hay artículos para mostrar</h4>
+            <div class="row px-2">
+                <div class="col-2 py-3">
+                    <form action="">
+                        <ul class="list-group list-group-flush" style="border-radius: 0.5rem;">
+                            <li class="list-group-item list-group-item-action list-group-item-dark">
+                                <h5>Estado</h5>
+                                <label class="form-check-label stretched-link azul" for="firstCheckboxStretched">Comprar
+                                    ahora </label>
+                                <input class="form-check-input me-1" type="checkbox" value="buyNow"
+                                    id="firstCheckboxStretched">
+                            </li>
+                            <li class="list-group-item list-group-item-action list-group-item-dark">
+                                <label class="form-check-label stretched-link azul" for="secondCheckboxStretched">En
+                                    subasta </label>
+                                <input class="form-check-input me-1" type="checkbox" value="auction"
+                                    id="secondCheckboxStretched">
+                            </li>
+                            <li class="list-group-item list-group-item-action list-group-item-dark">
+                                <h5 class="pt-2">Precio</h5>
+                                <input type="#" class="form-control text-center" id="exampleFormControlInput1"
+                                    placeholder="Min." name="min_price">
+                                <div class="div text-center">
+                                    <h5 class="pt-2">a</h5>
+                                </div>
+                                <input type="#" class="form-control text-center" id="exampleFormControlInput1"
+                                    placeholder="Máx." name="max_price">
+                                <div class="div text-center py-2">
+                                    <button type="submit"
+                                        class="btn btn-outline-light btn-sm btn-dark">Solicitar</button>
+                                </div>
+                            </li>
+                        </ul>
+                    </form>
                 </div>
-                <div class="col-1"></div>
-            </div>
-            {% endif %}
-            {% for n in nfts %}
-            <div class="row">
-                <div class="col">
-                    <h6>{{n['name']}}</h6>
+                {% if not nfts %}
+                <div class="row pt-3">
+                    <div class="col-1"></div>
+                    <div class="col-10 cuadrados text-center pt-3" style="border-radius: 15px;">
+                        <h4 class="py-5">No hay artículos para mostrar</h4>
+                    </div>
+                    <div class="col-1"></div>
                 </div>
+                {% endif %}
+                {% for n in nfts %}
+                <div class="col-10">
+                    <div class="card mb-3" style="width: 18rem; background-color: rgb(53 56 64);">
+                        <img src="{{n['image_url']}}" class="card-img-top">
+                        <div class="card-body">
+                            <h6 class="card-title">{{n['name']}} # {{n['quantity']}}</h6>
+                            <p class="card-text">{{n['description']}}.</p>
+                            <p>{{n['nft_value']}} {{n['currency']}}</p>
+                            <a href="#" class="btn btn-primary">Agregar al carrito</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
             </div>
-            {% endfor %}
         </form>
     </section>
     <!--Bootstrap js-->
