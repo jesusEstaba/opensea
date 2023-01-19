@@ -29,6 +29,10 @@
         .gris {
             color: rgb(156, 156, 156);
         }
+
+        .dark-blue {
+            background-color: rgb(4 17 29);
+        }
     </style>
 
     <title>OpenSea | Home NFT'S Market </title>
@@ -54,7 +58,7 @@
                         </div>
                         <div class="col-1"></div>
                         <div class="col-4">
-                            <input class="form-control me-2" type="search"
+                            <input class="form-control me-2 negro blanco" type="search"
                                 placeholder="Buscar artículos, colecciones y cuentas" aria-label="Search">
                         </div>
                         <a class="navbar-brand pt-2" href="#">
@@ -142,7 +146,7 @@
             </div>
             <div class="row">
                 <div class="col-1 gris">
-                    <small>COLECCIÓN</small>
+                    <small>PERFILES</small>
                 </div>
                 <div class="col-2">
 
@@ -154,22 +158,120 @@
                     <small>VOLUMEN</small>
                 </div>
             </div>
-            <div class="row py-4">
-                <div class="col-1 pt-3 text-center">
+            <div class="row py-2">
+                {% for x in users %}
+                <div class="col-1 pt-5 text-center">
                     <h6>1</h6>
                 </div>
-                <div class="col-1">
-                    <img src="https://i.seadn.io/gcs/files/d7936464d55988206c1b16c6929856f6.jpg?auto=format&w=256"
-                        style="border-radius: 10px;" height="65rem" width="65rem">
+                {% if userProfilesImages == None %}
+                <div class="col-1 my-3">
+                    <a href="/profile/{{x['_id']}}">
+                        <img src="https://fl-1.cdn.flockler.com/embed/no-image.svg" style="border-radius: 10px;"
+                            height="75rem" width="80rem">
+                    </a>
                 </div>
-                <div class="col-1 pt-3">
-                    <h6>name</h6>
+                {% else %}
+                <div class="col-1 my-3">
+                    <a href="/profile/{{x['_id']}}">
+                        <img src="{{userProfilesImages['image_url']}}" style="border-radius: 10px;" height="75rem"
+                            width="80rem">
+                    </a>
                 </div>
-                <div class="col-1 pt-3 text-end">
+                {% endif %}
+                <div class="col-1 pt-5">
+                    <h6>{{x['user']}}</h6>
+                </div>
+                <div class="col-1 pt-5 text-end">
                     <h6>0 currency</h6>
                 </div>
-                <div class="col-1 pt-3 text-end">
+                <div class="col-1 pt-5 text-end">
                     <h6>0 currency</h6>
+                </div>
+                <div class="col-1"></div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    <section class="dark-blue blanco pb-5">
+        <div class="container">
+            <div class="row py-5">
+                <div class="col-6 pb-5">
+                    <h5>Contacto</h5>
+                    <h6>Join our mailing list to stay in the loop with our newest feature releases, NFT drops, and tips
+                        and tricks for navigating OpenSea.</h6>
+                    <div class="div d-flex py-2">
+                        <input class="form-control me-2 dark-blue blanco form-control-lg" type="search"
+                            placeholder="Tu email" name="email_contact" aria-label="Search">
+                        <button type="submit" class="btn btn-primary">Registrar</button>
+                    </div>
+                </div>
+                <div class="col-1"></div>
+                <div class="col-5">
+                    <h5>Join the community</h5>
+                    <div class="div pt-2">
+                        <i class="fa-brands fa-instagram fa-3x"></i>
+                    </div>
+                </div>
+                <hr class="py-3">
+                <div class="col-4">
+                    <img src="https://opensea.io/static/images/logos/opensea-white.svg" width="40px" height="40px"
+                        alt="">
+                    <a href="/" class="text-decoration-none">
+                        <h5 class="blanco py-2">OpenSea</h5>
+                    </a>
+                    <h6>The world’s first and largest digital marketplace for crypto collectibles and non-fungible
+                        tokens (NFTs). Buy, sell, and discover exclusive digital items.</h6>
+                </div>
+
+                <div class="col-2">
+                    <h6>Marketplace</h6>
+                    <p>All NFTs</p>
+                    <p>Art</p>
+                    <p>Collectibles</p>
+                    <p>Domain Names</p>
+                    <p>Music</p>
+                    <p>Photography</p>
+                    <p>Sports</p>
+                    <p>Trading Cards</p>
+                    <p>Utility</p>
+                    <p>Virtual Worlds</p>
+                </div>
+                <div class="col-2">
+                    <h6>My Account</h6>
+                    <p>Profile</p>
+                    <p>Favorites</p>
+                    <p>Watchlist</p>
+                    <p>My Collections</p>
+                    <p>Create</p>
+                    <p>Settings</p>
+                    <h6>Stats</h6>
+                    <p>Rankings</p>
+                    <p>Activity</p>
+                </div>
+                <div class="col-2">
+                    <h6>Resources</h6>
+                    <p>Learn</p>
+                    <p>Help Center</p>
+                    <p>Platform Status</p>
+                    <p>Partners</p>
+                    <p>Taxes</p>
+                    <p>Blog</p>
+                    <p>Docs</p>
+                    <p>Newsletter</p>
+                </div>
+                <div class="col-2">
+                    <h6>Company</h6>
+                    <p>About</p>
+                    <p>Careers</p>
+                    <p>Ventures</p>
+                    <p>Grants</p>
+                </div>
+                <hr class="py-3">
+                <div class="col-6">
+                    <small>© Sr. Cthulhu 2022-2023</small>
+                </div>
+                <div class="col-6 text-end">
+                    <small>Privacy Policy Terms of Service</small>
                 </div>
             </div>
         </div>

@@ -33,6 +33,10 @@
         .cuadrados {
             outline: 1px solid #d0d0d0;
         }
+
+        .azul {
+            color: rgb(32, 129, 226);
+        }
     </style>
 
     <title>Crear NFT | OpenSea</title>
@@ -51,7 +55,7 @@
             </div>
         </div>
         {% endif %}
-        <form class="container-fluid" action="/nft/creation">
+        <div class="container-fluid">
             <div class="row py-2">
                 <div class="col-12">
                     <nav class="navbar">
@@ -68,7 +72,7 @@
                         </div>
                         <div class="col-1"></div>
                         <div class="col-4">
-                            <input class="form-control me-2" type="search"
+                            <input class="form-control me-2 negro blanco" type="search"
                                 placeholder="Buscar artículos, colecciones y cuentas" aria-label="Search">
                         </div>
                         <a class="navbar-brand pt-2" href="#">
@@ -88,14 +92,23 @@
                         </a>
                         <i class="fa-solid fa-wallet fa-2x"></i>
                         <i class="fa-solid fa-cart-shopping fa-2x"></i>
-                        <a href="/" class="text-decoration-none">
-                            <i class="fa-solid fa-power-off fa-2x blanco"></i>
-                        </a>
+                        <form action="/logout">
+                            <button class="btn fa-solid fa-power-off fa-2x blanco" type="submit" name="logout"></button>
+                        </form>
                     </nav>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-4"></div>
+            <form class="row" action="/nft/creation">
+                <div class="col-4 py-5 d-flex px-5">
+                    <div class="col-1">
+                        <a href="/profile/{{user['_id']}}" class="text-decoration-none">
+                            <i class="fa-solid fa-caret-left fa-4x azul"></i>
+                        </a>
+                    </div>
+                    <div class="div pt-4">
+                        <h6>Volver al perfil </h6>
+                    </div>
+                </div>
                 <div class="col-4 py-5">
                     <h2>Crear nuevo artículo</h2>
                     <br>
@@ -107,25 +120,34 @@
                             100
                             MB</small>
                     </div>
-                    <div class="col cuadrados"
-                        style="border-radius: 15px; padding-top: 3rem; padding-bottom: 3rem; padding-left: 3rem; padding-right: 3rem;">
-
-                        {% if nftImage['image_url'] %}
-                        <img class="img_client img-fluid" src="{{nftImage['image_url']}}" />
+                    <form action="/nft/preview">
+                        {% if nftImagePreview == None %}
+                        <div class="col cuadrados"
+                            style="border-radius: 15px; padding-top: 1rem; padding-bottom: 1rem; padding-left: 1rem; padding-right: 1rem;">
+                            <img class="img_client img-fluid" src="https://fl-1.cdn.flockler.com/embed/no-image.svg"
+                                style="border-radius: 0.5rem;">
+                        </div>
+                        {% else %}
+                        <div class="col cuadrados"
+                            style="border-radius: 15px; padding-top: 1rem; padding-bottom: 1rem; padding-left: 1rem; padding-right: 1rem;">
+                            <img class="img_client img-fluid" src="{{nftImagePreview['image_preview']}}"
+                                style="border-radius: 0.5rem;">
+                        </div>
                         {% endif %}
-                    </div>
-                    <div class="col pt-3">
-                        <a id="upload_widget" href="#" class="btn btn-primary">
-                            Cargar contenido NFT
-                        </a>
-                    </div>
+                        <div class="col pt-3">
+                            <a id="upload_widget" href="#" class="btn btn-primary">
+                                Cargar contenido NFT
+                            </a>
+                            <button type="submit" class="btn btn-light">Previsualizar</button>
+                        </div>
+                    </form>
                     <input type="hidden" name="image" id="image" />
 
                     <div class="col py-3">
                         <label for="exampleFormControlInput1" class="form-label">
                             <h6>Nombre *</h6>
                         </label>
-                        <input type="#" class="form-control" id="exampleFormControlInput1"
+                        <input type="#" class="form-control negro blanco" id="exampleFormControlInput1"
                             placeholder="Nombre del artículo" name="name">
                         <label for="exampleFormControlInput1" class="form-label">
                             <br>
@@ -134,37 +156,37 @@
                                 artículo para que los usuarios puedan hacer clic para obtener más información al
                                 respecto. Puedes crear un enlace a tu propia página web con más detalles.</small>
                         </label>
-                        <input type="#" class="form-control" id="exampleFormControlInput1"
+                        <input type="#" class="form-control negro blanco" id="exampleFormControlInput1"
                             placeholder="https://yoursite.io/category" name="external_link">
                         <label for="exampleFormControlInput1" class="form-label">
                             <br>
-                            <h6>Descripción</h6>
+                            <h6>Descripción *</h6>
                             <small class="gris">La descripción se incluirá en la página de detalles del artículo debajo
                                 de su imagen. Se admite la sintaxis Markdown.
                             </small>
                         </label>
-                        <input type="#" class="form-control" id="exampleFormControlInput1"
+                        <input type="#" class="form-control negro blanco" id="exampleFormControlInput1"
                             placeholder="Proporciona una descripción detallada del artículo." name="description">
                         <label for="exampleFormControlInput1" class="form-label">
                             <br>
-                            <h6>Suministro</h6>
+                            <h6>Suministro *</h6>
                             <small class="gris">La cantidad de artículos que se puede acuñar. ¡Sin coste de gas para
                                 ti!</small>
                         </label>
-                        <input type="#" class="form-control" id="exampleFormControlInput1" placeholder="1"
+                        <input type="#" class="form-control negro blanco" id="exampleFormControlInput1" placeholder="1"
                             name="quantity">
                         <label for="exampleFormControlInput1" class="form-label">
                             <br>
                             <h6>Blockchain</h6>
                         </label>
-                        <input type="#" class="form-control" id="exampleFormControlInput1"
+                        <input type="#" class="form-control negro blanco" id="exampleFormControlInput1"
                             placeholder="MFC-(Mafiance Coin)" name="currency">
                         <label for="exampleFormControlInput1" class="form-label">
                             <br>
-                            <h6>Valor</h6>
+                            <h6>Valor *</h6>
                         </label>
-                        <input type="#" class="form-control" id="exampleFormControlInput1" placeholder="0 $ currency"
-                            name="value">
+                        <input type="#" class="form-control negro blanco" id="exampleFormControlInput1"
+                            placeholder="0 $ currency" name="value">
                     </div>
                     <hr>
                     <div class="col">
@@ -172,8 +194,8 @@
                     </div>
                 </div>
                 <div class="col-4"></div>
-            </div>
-        </form>
+            </form>
+        </div>
     </section>
 
     <!--Cargamos widget de cloudinary-->

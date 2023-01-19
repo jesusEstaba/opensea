@@ -37,35 +37,64 @@
         .cuadrados {
             outline: 1px solid #d0d0d0;
         }
+
+        .circular--landscape {
+            display: inline-block;
+            position: relative;
+            width: 560px;
+            height: 560px;
+            overflow: hidden;
+            border-radius: 50%;
+        }
+
+        .circular--landscape img {
+            width: auto;
+            height: 100%;
+            margin-left: -560px;
+        }
     </style>
 
     <title>OpenSea | Cuenta creada</title>
 </head>
 
 <body>
-    <section class="negro">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col">
-                    <img src="https://wallpaperaccess.com/full/7087248.png" height="400px" width="1310px">
-                </div>
-            </div>
-        </div>
-    </section>
     <section class="negro blanco pb-5">
-        <div class="fluid-container">
-            <div class="row">
-                <div class="col text-center py-3">
+        <div class="container-fluid">
+            <div class="row py-2">
+                <div class="col-12">
+                    <nav class="navbar">
+                        <div class="col-1 d-flex">
+                            <a href="/">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/OpenSea_icon.svg/2048px-OpenSea_icon.svg.png"
+                                    height="40px" width="40px">
+                            </a>
+                            <div class="col-1 pt-2 px-2">
+                                <a href="/" class="text-decoration-none">
+                                    <h5 class="blanco">OpenSea</h5>
+                                </a>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+                <div class="col-4"></div>
+                <div class="col-4 text-center mx-2">
+                    <div class="circular--landscape">
+                        <img src="https://wallpaperaccess.com/full/7087248.png">
+                    </div>
+                </div>
+                <div class="col-4"></div>
+                <div class="col-12 text-center py-3">
                     <h2>¡Bienvenido! <h2 class="azul"> {{user['user']}}</h2>
                     </h2>
                     <hr>
-                    <h4>Comienza a subir NFTS a tu colección <a href="/profile" class="text-decoration-none">
+                    <h4>Comienza a subir NFTS a tu perfil <a href="/profile/{{user['_id']}}"
+                            class="text-decoration-none">
                             ahora</a>
                     </h4>
                     <br>
                     <i class="fa-solid fa-upload fa-3x"></i>
 
-                    <h6 class="pt-5">Tambien puedes explorar otras <a href="#" class="text-decoration-none">
+                    <h6 class="pt-5">Tambien puedes explorar otras <a href="/" class="text-decoration-none">
                             colecciones</a>
                     </h6>
                 </div>

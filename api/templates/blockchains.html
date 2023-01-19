@@ -45,11 +45,22 @@
         }
     </style>
 
-    <title>Tu Perfil | OpenSea</title>
+    <title>Obtener cripto | OpenSea</title>
 </head>
 
 <body>
     <section class="negro blanco pb-5">
+        {% if mensaje %}
+        <div class="container py-2">
+            <div class="row">
+                <div class="col-12">
+                    <div class="alert alert-danger" role="alert">
+                        {{mensaje}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
         <div class="container-fluid">
             <div class="row py-2">
                 <div class="col-12">
@@ -94,141 +105,35 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-12 position-relative">
-                    <img class="img-fluid" src="https://images4.alphacoders.com/903/903952.jpg" alt=""
-                        style="border-radius:2rem; width: 500rem; height: 40rem;">
-                    {% if not userImage %}
-                    <div class="position-absolute negro"
-                        style="border-radius: 1rem; bottom:-0.5rem; left: 3rem; width: 168px; padding: 0.5rem;">
-                        <img class="img-fluid" src="https://fl-1.cdn.flockler.com/embed/no-image.svg"
-                            style="border-radius: 0.5rem;">
+                <div class="col-4 py-5 d-flex px-4">
+                    <div class="col-1">
+                        <a href="/profile/{{user['_id']}}" class="text-decoration-none">
+                            <i class="fa-solid fa-caret-left fa-4x azul"></i>
+                        </a>
                     </div>
-                    {% endif %}
-                    <div class="position-absolute negro"
-                        style="border-radius: 1rem; bottom:-0.5rem; left: 3rem; width: 168px; padding: 0.5rem;">
-                        <img class="img_client img-fluid" src="{{userImage['image_url']}}"
-                            style="border-radius: 0.5rem;">
+                    <div class="col-2 pt-4">
+                        <h6>Volver al perfil </h6>
                     </div>
-                    <br>
-                    <br>
-
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-6 pt-3">
-                    <form class="col d-flex" action="/upload/image">
-                        <h2>{{user['user']}}</h2>
-                        <div class="col-6 d-flex px-5">
-                            <a id="upload_widget" href="#" class="btn btn-outline-light btn-sm">
-                                <h6 class="pt-2">Cambiar imagen</h6>
-                            </a>
-                            <div class="col-1"></div>
-                            <button type="submit" class="btn btn-outline-primary btn-sm">
-                                <h6 class="pt-2">Actualizar</h6>
-                            </button>
-                            <input type="hidden" name="image" id="image" />
-                        </div>
-                    </form>
-                    <h6 class="py-3 azul">Wallet: {{userWallet['_id']}} >>> Balance: {{userWallet['balance']}}</h6>
-                    <h6>Se ha unido: {{user['user_created_at']}}</h6>
-                    <hr>
-                    <small>Artículos {{user['nfts']}} • Último NFT creado {{ ['creation_date']}} • Comisión del
-                        creador
-                        0%
-                        • Cadena {{userWallet['name']}} • Categoría Varios </small>
-                    <br>
-                    <br>
-                    <p>Descripción del perfil</p>
-                </div>
-                <div class="col-3"></div>
-                <div class="col-1 pt-3">
-                    <a href="/blockchains" class="btn btn-outline-light btn-sm">Obtener blockchain</a>
-                </div>
-                <div class="col-1 pt-3 text-center">
-                    <a href="/creation" class="btn btn-primary">Crear NFT</a>
-                </div>
-                <div class="col-1 pt-3">
-                    <i class="fa-solid fa-share-nodes fa-2x"></i>
-                </div>
-            </div>
-            <hr>
-            <div class="row">
-                <form class="col-8" action="/profile/{{user['_id']}}">
-                    <div class="d-flex" role="search">
-                        <input class="form-control me-2 negro blanco" type="search"
-                            placeholder="Buscar por nombre o atributo" aria-label="Search" name="name">
-                    </div>
-                </form>
-            </div>
-            <div class="row">
-                <div class="col-2 pt-5 mx-4">
-                    <form action="/profile/{{user['_id']}}">
+                <div class="col-4 text-center py-5">
+                    <h2 class="pb-3">Aumenta tu balance</h2>
+                    {% for c in coins %}
+                    <form action="/add/blockchain">
                         <ul class="list-group list-group-flush" style="border-radius: 0.5rem;">
                             <li class="list-group-item list-group-item-action list-group-item-dark">
-                                <h5>Estado</h5>
-                                <label class="form-check-label stretched-link azul" for="firstCheckboxStretched">Comprar
-                                    ahora </label>
-                                <input class="form-check-input" type="checkbox" value="buyNow"
-                                    id="firstCheckboxStretched">
-                            </li>
-                            <li class="list-group-item list-group-item-action list-group-item-dark">
-                                <label class="form-check-label stretched-link azul" for="secondCheckboxStretched">En
-                                    subasta </label>
-                                <input class="form-check-input" type="checkbox" value="auction"
-                                    id="secondCheckboxStretched">
-                            </li>
-                            <li class="list-group-item list-group-item-action list-group-item-dark">
-                                <h5 class="pt-2">Precio</h5>
-                                <input type="#" class="form-control text-center" id="exampleFormControlInput1"
-                                    placeholder="Min." name="min">
-                                <div class="div text-center">
-                                    <h5 class="pt-2">a</h5>
+                                <h6>Adquirir {{c['currency']}} ⁓ {{c['name']}}</h6>
+                                <input class="form-control negro blanco" placeholder="0 USDT" name="quantity">
+                                <div class="div py-3">
+                                    <button type="submit" class="btn btn-primary">Comprar {{c['currency']}}</button>
                                 </div>
-                                <input type="#" class="form-control text-center" id="exampleFormControlInput1"
-                                    placeholder="Máx." name="max">
-                                <div class="div text-center py-2">
-                                    <button type="submit"
-                                        class="btn btn-outline-light btn-sm btn-dark">Solicitar</button>
-                                </div>
+                                <!--     <input type="hidden" name="id" value="{{user['_id']}}">-->
                             </li>
                         </ul>
                     </form>
+                    {% endfor %}
                 </div>
-                {% if not nfts %}
-                <div class="col-9 pt-5 px-5">
-                    <div class="col-10 cuadrados text-center py-5" style="border-radius: 15px;">
-                        <br>
-                        <br>
-                        <h4 class="py-5">No hay artículos para mostrar</h4>
-                        <br>
-                        <br>
-                    </div>
-                </div>
-                {% endif %}
-                {% for n in nfts %}
-                <div class="col-2 py-3 mx-4">
-                    <div class="card"
-                        style="width: 20rem; background-color: rgb(53 56 64); border-radius: 1rem; bottom:-0.5rem; left: 3rem; padding: 0.5rem;">
-                        <a href="/nft/details/{{n['_id']}}" class="text-decoration-none">
-                            <img src="{{n['image_url']}}" class="card-img-top" style="border-radius: 0.5rem;">
-                            <div class="card-body">
-                                <h6 class="card-title blanco">{{n['name']}} # {{n['quantity']}}</h6>
-                                <p class="card-text blanco">{{n['description']}}.</p>
-                                <p class="blanco">{{n['nft_value']}} {{n['currency']}}</p>
-                        </a>
-                        <div class="col d-flex">
-                            <div class="col-6 px-2">
-                                <a href="#" class="btn btn-primary btn-sm">Agregar al carrito</a>
-                            </div>
-                            <div class="col-6 px-2">
-                                <a href="#" class="btn btn-primary btn-sm">Comprar ahora</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <div class="col-4"></div>
             </div>
-            {% endfor %}
-        </div>
         </div>
     </section>
     <section class="dark-blue blanco pb-5">
@@ -315,15 +220,6 @@
             </div>
         </div>
     </section>
-    <!--Bootstrap js-->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
-        crossorigin="anonymous"></script>
-    <!--Cargamos widget de cloudinary-->
-    <script src="https://widget.cloudinary.com/v2.0/global/all.js" type="text/javascript"></script>
-
-    <!--Cargamos el archivo javascript para asociar al html-->
-    <script src="/app_image.js"></script>
 </body>
 
 </html>
