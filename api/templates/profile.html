@@ -29,7 +29,7 @@
         }
 
         .gris {
-            color: rgb(156, 156, 156);
+            background-color: rgb(38 43 47);
         }
 
         .cuadrados {
@@ -50,6 +50,28 @@
 
 <body>
     <section class="negro blanco pb-5">
+        {% if mensaje1 %}
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="alert alert-success" role="alert">
+                        {{mensaje1}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% if mensaje2 %}
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="alert alert-danger" role="alert">
+                        {{mensaje2}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
         <div class="container-fluid">
             <div class="row py-2">
                 <div class="col-12">
@@ -70,7 +92,7 @@
                             <input class="form-control me-2 negro blanco" type="search"
                                 placeholder="Buscar artículos, colecciones y cuentas" aria-label="Search">
                         </div>
-                        <a class="navbar-brand pt-2" href="#">
+                        <a class="navbar-brand pt-2" href="/landing">
                             <h6 class="blanco">Explorar</h6>
                         </a>
                         <a class="navbar-brand pt-2" href="#">
@@ -86,7 +108,10 @@
                             <i class="fa-regular fa-user fa-2x blanco"></i>
                         </a>
                         <i class="fa-solid fa-wallet fa-2x"></i>
-                        <i class="fa-solid fa-cart-shopping fa-2x"></i>
+                        <a href="#" class="text-decoration-none">
+                            <i class="fa-solid fa-cart-shopping fa-2x blanco" data-bs-toggle="modal"
+                                data-bs-target="#myModal"></i>
+                        </a>
                         <form action="/logout">
                             <button class="btn fa-solid fa-power-off fa-2x blanco" type="submit" name="logout"></button>
                         </form>
@@ -149,6 +174,85 @@
                 </div>
                 <div class="col-1 pt-3">
                     <i class="fa-solid fa-share-nodes fa-2x"></i>
+                </div>
+            </div>
+            <!-- Modal -->
+            <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+                    <div class="modal-content gris">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="myModalLabel">Tu carro</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <h6 class="pb-3">{{total}} item(s)</h6>
+                            {% if not cartproducts %}
+                            <hr>
+                            <div class="col text-center">
+                                <h6>No hay items en el carrito</h6>
+                            </div>
+                            <hr>
+                            {% endif %}
+                            {% for p in cartproducts %}
+                            <hr>
+                            <div class="col display-block d-flex">
+                                <div class="col-3">
+                                    <img src="{{p['image_url']}}" width="90rem" style="border-radius: 1rem;">
+                                </div>
+                                <div class="col-6">
+                                    <h6>{{p['name']}}</h6>
+                                    <h6 class="azul">{{p['creator']['user']}}</h6>
+                                    <h6 class="text-secondary">Ganancia del creador: 10%</h6>
+                                </div>
+                                <div class="col-3 pt-1 text-end">
+                                    <a href="/remove/cart/product/{{p['_id']}}" class="text-decoration-none">
+                                        <i class="fa-solid fa-circle-minus blanco fa-2x"></i>
+                                    </a>
+                                    <h6 class="pt-3">{{p['listed']['fixed_amount']}}
+                                        {{p['nft_currency']}}</h6>
+                                </div>
+                            </div>
+                            <hr>
+                            {% endfor %}
+                        </div>
+                        <div class="modal-footer">
+                            <div class="col-12 display-block d-flex">
+                                <div class="col-6">
+                                    <h5 class="pb-3">Precio total</h5>
+                                    <h5>Método de pago</h5>
+                                </div>
+                                <div class="col-6 text-end">
+                                    <h5 class="pb-3">{{montoTotal}} ${{cartproducts['nft_currency']}}</h5>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-check cuadrados blanco" style="border-radius: 1rem;">
+                                    <div class="px-2 pt-1">
+                                        <input class="form-check-input" type="radio" name="MFC" value="MFC">
+                                        <label class="form-check-label">
+                                            <h6 class="azul">Mafiance Coin</h6>
+                                        </label>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="form-check cuadrados blanco" style="border-radius: 1rem;">
+                                    <div class="px-2 pt-1">
+                                        <input class="form-check-input" type="radio" name="bank" value="card">
+                                        <label class="form-check-label">
+                                            <h6 class="azul">Tarjeta de débito / crédito</h6>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            {% if cartproducts %}
+                            <div class="col-12 d-grid gap-1 py-4">
+                                <a href="/checkout" type="button" class="btn btn-primary py-3"
+                                    style="border-radius: 2rem;">Completar
+                                    compra</a>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
                 </div>
             </div>
             <hr>
@@ -216,14 +320,21 @@
                                 <p class="card-text blanco">{{n['description']}}.</p>
                                 <p class="blanco">{{n['nft_value']}} {{n['currency']}}</p>
                         </a>
+                        {% if n['listed'] %}
                         <div class="col d-flex">
                             <div class="col-6 px-2">
-                                <a href="#" class="btn btn-primary btn-sm">Agregar al carrito</a>
+                                <a href="/nft/add/cart/profile/{{n['_id']}}" class="btn btn-primary btn-sm">Agregar al
+                                    carrito</a>
                             </div>
                             <div class="col-6 px-2">
                                 <a href="#" class="btn btn-primary btn-sm">Comprar ahora</a>
                             </div>
                         </div>
+                        {% else %}
+                        <div class="col text-center">
+                            <h5 class="azul">Item aún sin listar</h5>
+                        </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>

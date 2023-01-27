@@ -50,6 +50,28 @@
 
 <body>
     <section class="negro blanco pb-5">
+        {% if mensaje1 %}
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="alert alert-success" role="alert">
+                        {{mensaje1}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% if mensaje2 %}
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="alert alert-danger" role="alert">
+                        {{mensaje2}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
         <div class="container-fluid">
             <div class="row py-2">
                 <div class="col-12">
@@ -82,11 +104,14 @@
                         <a class="navbar-brand pt-2" href="#">
                             <h6 class="blanco">Recursos</h6>
                         </a>
-                        <a href="/signin" class="text-decoration-none">
+                        <a href="/profile/{{nft['creator']['_id']}}" class="text-decoration-none">
                             <i class="fa-regular fa-user fa-2x blanco"></i>
                         </a>
                         <i class="fa-solid fa-wallet fa-2x"></i>
-                        <i class="fa-solid fa-cart-shopping fa-2x"></i>
+                        <a href="#" class="text-decoration-none">
+                            <i class="fa-solid fa-cart-shopping fa-2x blanco" data-bs-toggle="modal"
+                                data-bs-target="#myModal"></i>
+                        </a>
                         <form action="/logout">
                             <button class="btn fa-solid fa-power-off fa-2x blanco" type="submit" name="logout"></button>
                         </form>
@@ -112,7 +137,11 @@
                             <hr>
                             <h5 class="azul">Categoría</h5>
                             <hr>
+                            {% if not nft['listed'] %}
                             <p>Ninguna</p>
+                            {% else %}
+                            <p>{{nft['listed']['category']}}</p>
+                            {% endif %}
                             <hr>
                             <div class="div d-flex">
                                 <i class="fa-solid fa-list fa-1x"></i>
@@ -127,10 +156,10 @@
                                     <p>Ganancia del Creador:</p>
                                 </div>
                                 <div class="col-6 text-end">
-                                    <p class="azul">id</p>
-                                    <p class="azul">currency</p>
-                                    <p class="text-secondary">datenow</p>
-                                    <p class="text-secondary">0%</p>
+                                    <p class="azul">{{ownerWallet['_id']}}</p>
+                                    <p class="azul">{{ownerWallet['currency']}}</p>
+                                    <p class="text-secondary">{{nft['creation_date']}}</p>
+                                    <p class="text-secondary">10%</p>
                                 </div>
                             </div>
                         </div>
@@ -138,38 +167,138 @@
                 </div>
                 <div class="col-5">
                     <div class="col d-flex">
-                        <div class="col-9">
+                        <div class="col-8">
                             <a href="/profile/{{nft['creator']['_id']}}" class="text-decoration-none">
                                 <h6 class="azul">{{nft['creator']['user']}}</h6>
                             </a>
                             <h2>{{nft['name']}} # {{nft['quantity']}}</h2>
-                            <small>Creado por <small class="azul">{{nft['owner']}}</small></small>
+                            <small>Creado por <small class="azul">{{nft['creator']['_id']}}</small></small>
                             <div class="d-flex py-3">
                                 <i class="fa-regular fa-eye fa-1x"></i>
                                 <small class="px-1">? Vistas</small>
                             </div>
                         </div>
-                        <div class="col-3 text-center pt-5">
-                            <a href="/nft/listForSale/{{nft['_id']}}" class="btn btn-outline-light">Listar para
+                        <div class="col-4 text-end pt-5">
+
+                            {% if not nft['listed'] %}
+                            <a href="/nft/listForSale/{{nft['_id']}}" class="btn btn-primary btn-lg">Listar para
                                 venta</a>
+                            {% endif %}
+
+
                         </div>
                     </div>
 
                     <div class="col">
                         <ul class="list-group list-group-flush gris cuadrados" style="border-radius: 0.5rem;">
                             <li class="list-group-item gris blanco">
-                                <h6 class="pt-2">Cierre de venta: 00:00</h6>
+                                {% if nft['listed'] %}
+                                <h6 class="pt-2">Cierre de venta: {{nft['listed']['set_time']}} Hrs</h6>
+                                {% else %}
+                                <h6 class="pt-2 azul">Cierre de venta: - Aún sin tiempo establecido -</h6>
+                                {% endif %}
                             </li>
                             <li class="list-group-item list-group-item-action gris blanco">
                                 <small class="pt-2">Mejor oferta</small>
                                 <h2>1000 currency <small>| Base: {{nft['nft_value']}} {{nft['currency']}}</small>
                                 </h2>
+                                {% if not nft['listed'] %}
+                                <hr>
+                                <h4 class="azul">El item no ha sido listado para venta</h4>
+                                <hr>
+                                {% else %}
                                 <div class="d-flex py-2 d-grid gap-2">
-                                    <a href="#" class="btn btn-primary btn-lg">Agregar al carrito</a>
+                                    <a href="/nft/add/cart/detail/{{nft['_id']}}" class="btn btn-primary btn-lg">Agregar
+                                        al carrito</a>
                                     <a href="#" class="btn btn-primary btn-lg">Hacer oferta</a>
                                 </div>
+                                {% endif %}
                             </li>
                         </ul>
+                        <!-- Modal 1 Carrito -->
+                        <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="myModalLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+                                <div class="modal-content gris">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="myModalLabel">Tu carro</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <h6 class="pb-3">{{total}} item(s)</h6>
+                                        {% if not cartproducts %}
+                                        <hr>
+                                        <div class="col text-center">
+                                            <h6>No hay items en el carrito</h6>
+                                        </div>
+                                        <hr>
+                                        {% endif %}
+                                        {% for p in cartproducts %}
+                                        <hr>
+                                        <div class="col display-block d-flex">
+                                            <div class="col-3">
+                                                <img src="{{p['image_url']}}" width="90rem"
+                                                    style="border-radius: 1rem;">
+                                            </div>
+                                            <div class="col-6">
+                                                <h6>{{p['name']}}</h6>
+                                                <h6 class="azul">{{p['creator']['user']}}</h6>
+                                                <h6 class="text-secondary">Ganancia del creador: 10%</h6>
+                                            </div>
+                                            <div class="col-3 pt-1 text-end">
+                                                <a href="/remove/cart/product/{{p['_id']}}"
+                                                    class="text-decoration-none">
+                                                    <i class="fa-solid fa-circle-minus blanco fa-2x"></i>
+                                                </a>
+                                                <h6 class="pt-3">{{p['listed']['fixed_amount']}}
+                                                    {{p['nft_currency']}}</h6>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="modal-footer">
+                                        <div class="col-12 display-block d-flex">
+                                            <div class="col-6">
+                                                <h5 class="pb-3">Precio total</h5>
+                                                <h5>Método de pago</h5>
+                                            </div>
+                                            <div class="col-6 text-end">
+                                                <h5 class="pb-3">{{montoTotal}} ${{cartproducts['nft_currency']}}</h5>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="form-check cuadrados blanco" style="border-radius: 1rem;">
+                                                <div class="px-2 pt-1">
+                                                    <input class="form-check-input" type="radio" name="MFC" value="MFC">
+                                                    <label class="form-check-label">
+                                                        <h6 class="azul">Mafiance Coin</h6>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <div class="form-check cuadrados blanco" style="border-radius: 1rem;">
+                                                <div class="px-2 pt-1">
+                                                    <input class="form-check-input" type="radio" name="bank"
+                                                        value="card">
+                                                    <label class="form-check-label">
+                                                        <h6 class="azul">Tarjeta de débito / crédito</h6>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% if cartproducts %}
+                                        <div class="col-12 d-grid gap-1 py-4">
+                                            <a href="/checkout" type="button" class="btn btn-primary py-3"
+                                                style="border-radius: 2rem;">Completar
+                                                compra</a>
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <br>
                         <table class="table blanco gris cuadrados" style="border-radius: 0.5rem;">
                             <thead>
@@ -275,13 +404,15 @@
                                                 <img src="{{n['image_url']}}" class="card-img-top"
                                                     style="border-radius: 0.5rem;">
                                                 <div class="card-body">
-                                                    <h6 class="card-title blanco">{{n['name']}} # {{n['quantity']}}</h6>
+                                                    <h6 class="card-title blanco">{{n['name']}} # {{n['quantity']}}
+                                                    </h6>
                                                     <p class="card-text blanco">{{n['description']}}.</p>
                                                     <p class="blanco">{{n['nft_value']}} {{n['currency']}}</p>
                                             </a>
                                             <div class="col d-flex">
                                                 <div class="col-6 px-2">
-                                                    <a href="#" class="btn btn-primary btn-sm">Agregar al carrito</a>
+                                                    <a href="#" class="btn btn-primary btn-sm">Agregar al
+                                                        carrito</a>
                                                 </div>
                                                 <div class="col-6 px-2">
                                                     <a href="#" class="btn btn-primary btn-sm">Comprar ahora</a>
@@ -383,6 +514,10 @@
             </div>
         </div>
     </section>
+    <!--Bootstrap JS-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+        crossorigin="anonymous"></script>
 </body>
 
 </html>
